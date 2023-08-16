@@ -28,11 +28,11 @@ export class CandidatesService {
     return this.candidateRepository.find();
   }
 
-  async findOne(id: number) {
+  async findOne(id: number): Promise<Candidate> {
     return this.candidateRepository.findOne({where: {id}})
   }
 
-  async update(id: number, updateCandidateDto: UpdateCandidateDto) {
+  async update(id: number, updateCandidateDto: UpdateCandidateDto): Promise<Candidate> {
     const updateCandidate = await this.candidateRepository.findOne({where: {id}})
       if(!updateCandidate) {
         throw new NotFoundException(`Candidate Not Found`)
