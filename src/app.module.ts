@@ -3,7 +3,9 @@ import { CandidatesModule } from './candidates/candidates.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CompaniesModule } from './companies/companies.module';
 import { JobsModule } from './jobs/jobs.module';
+import { CandidatesJobsModule } from './candidates-jobs/candidates-jobs.module';
 import 'dotenv/config'
+
 
 @Module({
   imports: [
@@ -19,7 +21,8 @@ import 'dotenv/config'
     }),
     CandidatesModule,
     CompaniesModule,
-    JobsModule],
+    JobsModule,
+    CandidatesJobsModule],
   controllers: [],
   providers: [],
 })

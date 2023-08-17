@@ -5,11 +5,12 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Candidate } from './entities/candidate.entity';
 import { Repository } from 'typeorm';
 
+
 @Injectable()
 export class CandidatesService {
   constructor(
     @InjectRepository(Candidate)
-    private readonly candidateRepository: Repository<Candidate>
+    private candidateRepository: Repository<Candidate>,
   ){}
 
   async create(createCandidateDto: CreateCandidateDto): Promise<Candidate> {

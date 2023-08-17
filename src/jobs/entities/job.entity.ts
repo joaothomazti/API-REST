@@ -1,5 +1,7 @@
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Company } from '../../companies/entities/company.entity'
+import { Candidate } from "src/candidates/entities/candidate.entity";
+
 
 @Entity({name: 'jobs'})
 export class Job {
@@ -22,4 +24,7 @@ export class Job {
     companyId: number;
     @ManyToOne(() => Company, (company) => company.jobs)
     company: Company
+
+    @ManyToMany(() => Candidate, (candidate) => candidate.jobs)
+    candidates: Candidate[]
 }

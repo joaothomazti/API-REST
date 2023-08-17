@@ -32,4 +32,9 @@ export class JobsController {
   remove(@Param('id') id: string) {
     return this.jobsService.remove(+id);
   }
+
+  @Get('company/:companyId')
+  async getByCompanyId(@Param('companyId') companyId: number): Promise<Job[]>{
+    return this.jobsService.findByCompanyId(companyId)
+  }
 }

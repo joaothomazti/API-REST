@@ -41,4 +41,10 @@ export class JobsService {
     }
     await this.jobsRepository.delete(id)
   }
+
+  async findByCompanyId(companyId: number): Promise<Job[]> {
+    return this.jobsRepository.find({
+      where: { companyId}
+    })
+  }
 }
