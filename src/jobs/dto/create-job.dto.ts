@@ -1,12 +1,24 @@
-import { IsString, IsNotEmpty } from "class-validator";
+import { ApiProperty } from '@nestjs/swagger';
+import { IsString, IsNotEmpty, IsNumber } from 'class-validator';
 
 export class CreateJobDto {
-    @IsString()
-    @IsNotEmpty()
-    title: string;
+  @ApiProperty({
+    example: 'Development BackEnd',
+  })
+  @IsString()
+  @IsNotEmpty()
+  title: string;
 
-    @IsString()
-    @IsNotEmpty()
-    description: string;
-    companyId: number;
+  @ApiProperty({
+    example: 'Description of your job',
+  })
+  @IsString()
+  @IsNotEmpty()
+  description: string;
+
+  @ApiProperty({
+    example: 'Id your company: 2',
+  })
+  @IsNumber()
+  companyId: number;
 }

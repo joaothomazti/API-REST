@@ -5,7 +5,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Candidate } from 'src/candidates/entities/candidate.entity';
 
-
 @Injectable()
 export class CandidatesJobsService {
   constructor(
@@ -14,22 +13,26 @@ export class CandidatesJobsService {
     @InjectRepository(Job)
     private jobRepository: Repository<Job>,
     @InjectRepository(CandidatesJob)
-    private candidateJobRepository: Repository<CandidatesJob>
-  ){}
+    private candidateJobRepository: Repository<CandidatesJob>,
+  ) {}
 
-  async addCandidateToJob(candidateId: number, jobId: number){
+  async addCandidateToJob(
+    candidateId: number,
+    jobId: number,
+  ): Promise<CandidatesJob> {
     const [candidate, job] = await Promise.all([
       this.candidateRepository.findOneOrFail({
-        where: {id: candidateId},
+        where: { id: candidateId },
       }),
       this.jobRepository.findOneOrFail({
-        where: {id: jobId}
-      })
-    ]);  
-    const candidateJob = await this.candidateJobRepository.create({
+        where: { id: jobId },
+      }),
+    ]);
+
+    const candidateJob = this.candidateJobRepository.create({
       candidateId,
-      jobId
-    })
-    return await this.candidateJobRepository.save(candidateJob)
+      jobId,
+    });
+    return await this.candidateJobRepository.save(candidateJob);
   }
 }

@@ -4,8 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { CompaniesModule } from './companies/companies.module';
 import { JobsModule } from './jobs/jobs.module';
 import { CandidatesJobsModule } from './candidates-jobs/candidates-jobs.module';
-import 'dotenv/config'
-
+import 'dotenv/config';
 
 @Module({
   imports: [
@@ -17,12 +16,13 @@ import 'dotenv/config'
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
       entities: [__dirname + '/**/*.entity{.js,.ts}'],
-      synchronize: true
+      synchronize: true,
     }),
     CandidatesModule,
     CompaniesModule,
     JobsModule,
-    CandidatesJobsModule],
+    CandidatesJobsModule,
+  ],
   controllers: [],
   providers: [],
 })

@@ -9,36 +9,45 @@ import { Repository } from 'typeorm';
 export class CompaniesService {
   constructor(
     @InjectRepository(Company)
-    private readonly companiesRepository: Repository<Company>
-  ){}
+    private readonly companiesRepository: Repository<Company>,
+  ) {}
 
   async create(createCompanyDto: CreateCompanyDto): Promise<Company> {
-    return await this.companiesRepository.save(createCompanyDto)
+    return await this.companiesRepository.save(createCompanyDto);
   }
 
   async findAll(): Promise<Company[]> {
-    return this.companiesRepository.find()
+    return this.companiesRepository.find();
   }
 
   async findOne(id: number): Promise<Company> {
-    return this.companiesRepository.findOne({where: {id}})
+    return this.companiesRepository.findOne({ where: { id } });
   }
 
-  async update(id: number, updateCompanyDto: UpdateCompanyDto): Promise<Company> {
-    const updateCompany = await this.companiesRepository.findOne({where: {id}})
-    if(!updateCompany){
-      throw new NotFoundException(`Company Not Found`)
+  async update(
+    id: number,
+    updateCompanyDto: UpdateCompanyDto,
+  ): Promise<Company> {
+    const updateCompany = await this.companiesRepository.findOne({
+      where: { id },
+    });
+    if (!updateCompany) {
+      throw new NotFoundException(`Company Not Found`);
     }
-    await this.companiesRepository.update({id: +id}, updateCompanyDto)
-    const updatedCompany = await this.companiesRepository.findOne({where: {id}})
-    return updatedCompany
+    await this.companiesRepository.update({ id: +id }, updateCompanyDto);
+    const updatedCompany = await this.companiesRepository.findOne({
+      where: { id },
+    });
+    return updatedCompany;
   }
 
   async remove(id: number) {
-    const deleteCompany = await this.companiesRepository.findOne({where: {id}})
-    if(!deleteCompany){
-      throw new NotFoundException(`Company Not Found`)
+    const deleteCompany = await this.companiesRepository.findOne({
+      where: { id },
+    });
+    if (!deleteCompany) {
+      throw new NotFoundException(`Company Not Found`);
     }
-    await this.companiesRepository.delete(id)
+    await this.companiesRepository.delete(id);
   }
 }

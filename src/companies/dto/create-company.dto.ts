@@ -1,17 +1,30 @@
-import { IsString, IsNotEmpty, IsEmail } from "class-validator";
+import { ApiProperty } from '@nestjs/swagger';
+import { IsString, IsNotEmpty, IsEmail } from 'class-validator';
 
 export class CreateCompanyDto {
-    @IsString()
-    @IsNotEmpty()
-    name: string;
-    
-    @IsString()
-    bio: string;
+  @ApiProperty({
+    example: 'NestJs',
+  })
+  @IsString()
+  @IsNotEmpty()
+  name: string;
 
-    @IsString()
-    website: string;
+  @ApiProperty({
+    example: 'This company is focused on web development',
+  })
+  @IsString()
+  bio?: string;
 
-    @IsString()
-    @IsEmail()
-    email: string;
+  @ApiProperty({
+    example: 'website.com.br',
+  })
+  @IsString()
+  website?: string;
+
+  @ApiProperty({
+    example: 'test@test.com',
+  })
+  @IsString()
+  @IsEmail()
+  email?: string;
 }
