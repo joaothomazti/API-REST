@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Job } from 'src/jobs/entities/job.entity';
 import { CandidatesJob } from './entities/candidates-job.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -20,19 +20,24 @@ export class CandidatesJobsService {
     candidateId: number,
     jobId: number,
   ): Promise<CandidatesJob> {
-    const [candidate, job] = await Promise.all([
-      this.candidateRepository.findOneOrFail({
-        where: { id: candidateId },
-      }),
-      this.jobRepository.findOneOrFail({
-        where: { id: jobId },
-      }),
-    ]);
+    try {
+      const [candidates, jobs] = await Promise.all([
+        this.candidateRepository.findOneOrFail({
+          where: { id: candidateId },
+        }),
+        this.jobRepository.findOneOrFail({
+          where: { id: jobId },
+        }),
+      ]);
 
-    const candidateJob = this.candidateJobRepository.create({
-      candidateId,
-      jobId,
-    });
-    return await this.candidateJobRepository.save(candidateJob);
+      const candidateJob = this.candidateJobRepository.create({
+        candidateId,
+        jobId,
+      });
+
+      return await this.candidateJobRepository.save(candidateJob);
+    } catch (error) {
+      throw new NotFoundException(`Candidate Not Found or Job Not Found`);
+    }
   }
 }
