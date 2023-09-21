@@ -31,20 +31,20 @@ export class CandidatesController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string): Promise<Candidate> {
-    return this.candidatesService.findOne(+id);
+  async findOne(@Param('id') id: number): Promise<Candidate> {
+    return this.candidatesService.findOne(id);
   }
 
   @Patch(':id')
   async update(
-    @Param('id') id: string,
+    @Param('id') id: number,
     @Body() updateCandidateDto: UpdateCandidateDto,
   ): Promise<Candidate> {
-    return this.candidatesService.update(+id, updateCandidateDto);
+    return this.candidatesService.update(id, updateCandidateDto);
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string) {
-    return this.candidatesService.remove(+id);
+  async remove(@Param('id') id: number) {
+    return this.candidatesService.remove(id);
   }
 }

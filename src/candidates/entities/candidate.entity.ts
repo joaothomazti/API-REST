@@ -35,5 +35,5 @@ export class Candidate {
   updatedAt: Date;
 
   @ManyToMany(() => Job, (job) => job.candidates)
-  jobs: Job[];
+  jobs?: Job[];
 }
