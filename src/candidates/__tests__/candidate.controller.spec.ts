@@ -15,7 +15,7 @@ describe('CandidateController', () => {
           provide: CandidatesService,
           useValue: {
             create: jest.fn().mockResolvedValue(candidateEntity),
-            findOne: jest.fn().mockResolvedValue(candidateEntity),
+            findOne: jest.fn().mockResolvedValue([candidateEntity]),
             findAll: jest.fn().mockResolvedValue([candidateEntity]),
           },
         },
@@ -39,6 +39,23 @@ describe('CandidateController', () => {
 
   it('should return ReturnUser in findAll', async () => {
     const candidate = await controller.findAll();
+    expect(candidate).toEqual([
+      {
+        id: candidateEntity.id,
+        name: candidateEntity.name,
+        email: candidateEntity.email,
+        phone: candidateEntity.phone,
+        bio: candidateEntity.bio,
+        open_to_work: candidateEntity.open_to_work,
+        createdAt: candidateEntity.createdAt,
+        updatedAt: candidateEntity.updatedAt,
+      },
+    ]);
+  });
+
+  it('should return ReturnUser in findOne', async () => {
+    const candidate = await controller.findOne(candidateEntity.id);
+
     expect(candidate).toEqual([
       {
         id: candidateEntity.id,

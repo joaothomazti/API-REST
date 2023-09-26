@@ -29,7 +29,7 @@ export class JobsService {
     if (!updateJob) {
       throw new NotFoundException(`Job Not Found`);
     }
-    await this.jobsRepository.update({ id: +id }, updateJobDto);
+    await this.jobsRepository.update({ id: id }, updateJobDto);
     const updatedJob = await this.jobsRepository.findOne({ where: { id } });
     return updatedJob;
   }

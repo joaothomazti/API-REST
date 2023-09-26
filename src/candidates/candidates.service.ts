@@ -31,11 +31,11 @@ export class CandidatesService {
   }
 
   async findAll(): Promise<Candidate[]> {
-    return this.candidateRepository.find();
+    return await this.candidateRepository.find();
   }
 
   async findOne(id: number): Promise<Candidate> {
-    return this.candidateRepository.findOne({ where: { id } });
+    return this.candidateRepository.findOne({where: {id}});
   }
 
   async update(

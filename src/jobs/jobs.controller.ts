@@ -19,31 +19,31 @@ export class JobsController {
   constructor(private readonly jobsService: JobsService) {}
 
   @Post()
-  create(@Body() createJobDto: CreateJobDto): Promise<Job> {
+  async create(@Body() createJobDto: CreateJobDto): Promise<Job> {
     return this.jobsService.create(createJobDto);
   }
 
   @Get()
-  findAll(): Promise<Job[]> {
+  async findAll(): Promise<Job[]> {
     return this.jobsService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): Promise<Job> {
-    return this.jobsService.findOne(+id);
+  async findOne(@Param('id') id: number): Promise<Job> {
+    return this.jobsService.findOne(id);
   }
 
   @Patch(':id')
-  update(
-    @Param('id') id: string,
+  async update(
+    @Param('id') id: number,
     @Body() updateJobDto: UpdateJobDto,
   ): Promise<Job> {
-    return this.jobsService.update(+id, updateJobDto);
+    return this.jobsService.update(id, updateJobDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.jobsService.remove(+id);
+  async remove(@Param('id') id: number) {
+    return this.jobsService.remove(id);
   }
 
   @Get('company/:companyId')

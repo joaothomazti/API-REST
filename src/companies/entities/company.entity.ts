@@ -32,5 +32,5 @@ export class Company {
   updatedAt: Date;
 
   @OneToMany(() => Job, (job) => job.company)
-  jobs: Job[];
+  jobs?: Job[];
 }

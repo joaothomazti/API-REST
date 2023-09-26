@@ -29,20 +29,20 @@ export class CompaniesController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string): Promise<Company> {
-    return this.companiesService.findOne(+id);
+  async findOne(@Param('id') id: number): Promise<Company> {
+    return this.companiesService.findOne(id);
   }
 
   @Patch(':id')
   async update(
-    @Param('id') id: string,
+    @Param('id') id: number,
     @Body() updateCompanyDto: UpdateCompanyDto,
   ): Promise<Company> {
-    return this.companiesService.update(+id, updateCompanyDto);
+    return this.companiesService.update(id, updateCompanyDto);
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string) {
-    return this.companiesService.remove(+id);
+  async remove(@Param('id') id: number) {
+    return this.companiesService.remove(id);
   }
 }

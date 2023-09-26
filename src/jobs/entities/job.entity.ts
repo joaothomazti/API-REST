@@ -30,8 +30,8 @@ export class Job {
   @Column()
   companyId: number;
   @ManyToOne(() => Company, (company) => company.jobs)
-  company: Company;
+  company?: Company;
 
   @ManyToMany(() => Candidate, (candidate) => candidate.jobs)
-  candidates: Candidate[];
+  candidates?: Candidate[];
 }
