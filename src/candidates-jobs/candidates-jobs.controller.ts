@@ -13,9 +13,8 @@ export class CandidatesJobsController {
   async addCandidate(
     @Body() createCandidatesJobDto: CreateCandidatesJobDto,
   ): Promise<CandidatesJob> {
-    return await this.candidatesJobsService.addCandidateToJob(
-      createCandidatesJobDto.candidateId,
-      createCandidatesJobDto.jobId,
+    return await this.candidatesJobsService.addCandidate(
+      createCandidatesJobDto,
     );
   }
 }

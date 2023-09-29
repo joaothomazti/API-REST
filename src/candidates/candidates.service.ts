@@ -35,7 +35,7 @@ export class CandidatesService {
   }
 
   async findOne(id: number): Promise<Candidate> {
-    return this.candidateRepository.findOne({where: {id}});
+    return this.candidateRepository.findOne({ where: { id } });
   }
 
   async update(

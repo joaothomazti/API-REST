@@ -1,9 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Job } from 'src/jobs/entities/job.entity';
+import { Job } from '../jobs/entities/job.entity';
 import { CandidatesJob } from './entities/candidates-job.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Candidate } from 'src/candidates/entities/candidate.entity';
+import { Candidate } from '../candidates/entities/candidate.entity';
+import { CreateCandidatesJobDto } from './dto/create-candidates-job.dto';
 
 @Injectable()
 export class CandidatesJobsService {
@@ -16,28 +17,30 @@ export class CandidatesJobsService {
     private candidateJobRepository: Repository<CandidatesJob>,
   ) {}
 
-  async addCandidateToJob(
-    candidateId: number,
-    jobId: number,
+  async addCandidate(
+    createCandidatesJobDto: CreateCandidatesJobDto,
   ): Promise<CandidatesJob> {
     try {
-      const [candidates, jobs] = await Promise.all([
-        this.candidateRepository.findOneOrFail({
+      const { candidateId, jobId } = createCandidatesJobDto;
+      const [candidateExists, jobExists] = await Promise.all([
+        this.candidateRepository.findOne({
           where: { id: candidateId },
         }),
-        this.jobRepository.findOneOrFail({
+        this.jobRepository.findOne({
           where: { id: jobId },
         }),
       ]);
 
+      if (!candidateExists || !jobExists) {
+        throw new NotFoundException('Candidate Not Found or Job Not Found');
+      }
       const candidateJob = this.candidateJobRepository.create({
         candidateId,
         jobId,
       });
-
-      return await this.candidateJobRepository.save(candidateJob);
+      return this.candidateJobRepository.save(candidateJob);
     } catch (error) {
-      throw new NotFoundException(`Candidate Not Found or Job Not Found`);
+      throw error;
     }
   }
 }

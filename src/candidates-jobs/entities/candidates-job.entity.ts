@@ -7,7 +7,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Job } from '../../jobs/entities/job.entity';
-import { Candidate } from 'src/candidates/entities/candidate.entity';
+import { Candidate } from '../../candidates/entities/candidate.entity';
 
 @Entity()
 export class CandidatesJob {
@@ -27,8 +27,8 @@ export class CandidatesJob {
   updatedAt: Date;
 
   @ManyToMany(() => Candidate, (candidate) => candidate.jobs)
-  candidates: Candidate[];
+  candidates?: Candidate[];
 
   @ManyToMany(() => Job, (job) => job.candidates)
-  jobs: Job[];
+  jobs?: Job[];
 }
