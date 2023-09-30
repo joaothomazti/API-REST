@@ -42,9 +42,7 @@ export class CandidatesService {
   async findOne(id: number): Promise<Candidate> {
     try {
       const findCandidate = await this.candidateRepository.findOne({
-        where: {
-          id: id,
-        },
+        where: { id },
       });
       if (!findCandidate) {
         throw new NotFoundException(`Candidate with ID ${id} not found`);
