@@ -1,7 +1,7 @@
 import {
   Injectable,
-  BadGatewayException,
   NotFoundException,
+  BadRequestException,
 } from '@nestjs/common';
 import { CreateCandidateDto } from './dto/create-candidate.dto';
 import { UpdateCandidateDto } from './dto/update-candidate.dto';
@@ -17,17 +17,22 @@ export class CandidatesService {
   ) {}
 
   async create(createCandidateDto: CreateCandidateDto): Promise<Candidate> {
-    const emailExists = await this.candidateRepository.findOne({
-      where: {
-        email: createCandidateDto.email,
-      },
-    });
+    try {
+      const { email } = createCandidateDto;
+      const emailExists = await this.candidateRepository.findOne({
+        where: {
+          email: email,
+        },
+      });
 
-    if (emailExists) {
-      throw new BadGatewayException('email registered in system');
+      if (emailExists) {
+        throw new BadRequestException('email registered in system');
+      }
+
+      return this.candidateRepository.save(createCandidateDto);
+    } catch (error) {
+      throw error;
     }
-
-    return await this.candidateRepository.save(createCandidateDto);
   }
 
   async findAll(): Promise<Candidate[]> {
@@ -35,34 +40,48 @@ export class CandidatesService {
   }
 
   async findOne(id: number): Promise<Candidate> {
-    return this.candidateRepository.findOne({ where: { id } });
+    try {
+      const findCandidate = await this.candidateRepository.findOne({
+        where: {
+          id: id,
+        },
+      });
+      if (!findCandidate) {
+        throw new NotFoundException(`Candidate with ID ${id} not found`);
+      }
+      return findCandidate;
+    } catch (error) {
+      throw error;
+    }
   }
 
   async update(
     id: number,
     updateCandidateDto: UpdateCandidateDto,
   ): Promise<Candidate> {
-    const updateCandidate = await this.candidateRepository.findOne({
-      where: { id },
-    });
-    if (!updateCandidate) {
-      throw new NotFoundException(`Candidate Not Found`);
+    try {
+      const existingCandidate = await this.candidateRepository.findOne({
+        where: { id },
+      });
+      if (!existingCandidate) {
+        throw new NotFoundException(`Candidate with ID ${id} not found`);
+      }
+      this.candidateRepository.merge(existingCandidate, updateCandidateDto);
+      await this.candidateRepository.save(existingCandidate);
+      return existingCandidate;
+    } catch (error) {
+      throw error;
     }
-    await this.candidateRepository.update({ id: +id }, updateCandidateDto);
-
-    const updatedCandidate = await this.candidateRepository.findOne({
-      where: { id },
-    });
-    return updatedCandidate;
   }
 
   async remove(id: number) {
-    const deleteCandidate = await this.candidateRepository.findOne({
-      where: { id },
-    });
-    if (!deleteCandidate) {
-      throw new NotFoundException(`Candidate Not Found`);
+    try {
+      const candidateToRemove = await this.candidateRepository.delete(id);
+      if (candidateToRemove.affected === 0) {
+        throw new NotFoundException(`Candidate with ID ${id} not found`);
+      }
+    } catch (error) {
+      throw error;
     }
-    await this.candidateRepository.delete(id);
   }
 }
