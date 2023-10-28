@@ -38,7 +38,7 @@ export class CandidatesJobsService {
         candidateId,
         jobId,
       });
-      return this.candidateJobRepository.save(candidateJob);
+      return await this.candidateJobRepository.save(candidateJob);
     } catch (error) {
       throw error;
     }

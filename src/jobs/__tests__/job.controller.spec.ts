@@ -17,6 +17,7 @@ describe('JobController', () => {
             create: jest.fn().mockResolvedValue(jobEntity),
             findOne: jest.fn().mockResolvedValue(jobEntity),
             findAll: jest.fn().mockResolvedValue(jobEntity),
+            getByCompanyId: jest.fn().mockResolvedValue(jobEntity),
           },
         },
       ],
@@ -49,4 +50,9 @@ describe('JobController', () => {
 
     expect(job).toEqual(jobEntity);
   });
+
+  // it('should return a company Id for job', async () => {
+  //   const companyId = await controller.getByCompanyId(jobEntity.companyId);
+  //   expect(companyId).toEqual(jobEntity);
+  // });
 });
