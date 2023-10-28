@@ -29,7 +29,7 @@ export class CandidatesService {
         throw new BadRequestException('email registered in system');
       }
 
-      return this.candidateRepository.save(createCandidateDto);
+      return await this.candidateRepository.save(createCandidateDto);
     } catch (error) {
       throw error;
     }

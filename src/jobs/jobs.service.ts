@@ -21,30 +21,50 @@ export class JobsService {
   }
 
   async findOne(id: number): Promise<Job> {
-    return this.jobsRepository.findOne({ where: { id } });
+    try {
+      const findJob = await this.jobsRepository.findOne({ where: { id } });
+      if (!findJob) throw new NotFoundException(`Job with ID ${id} not found`);
+      return findJob;
+    } catch (error) {
+      throw error;
+    }
   }
 
   async update(id: number, updateJobDto: UpdateJobDto): Promise<Job> {
-    const updateJob = await this.jobsRepository.findOne({ where: { id } });
-    if (!updateJob) {
-      throw new NotFoundException(`Job Not Found`);
+    try {
+      const existingJob = await this.jobsRepository.findOne({ where: { id } });
+      if (!existingJob)
+        throw new NotFoundException(`Job with ID ${id} not found`);
+      this.jobsRepository.merge(existingJob, updateJobDto);
+      await this.jobsRepository.save(existingJob);
+      return existingJob;
+    } catch (error) {
+      throw error;
     }
-    await this.jobsRepository.update({ id: id }, updateJobDto);
-    const updatedJob = await this.jobsRepository.findOne({ where: { id } });
-    return updatedJob;
   }
 
   async remove(id: number) {
-    const deleteJob = await this.jobsRepository.findOne({ where: { id } });
-    if (!deleteJob) {
-      throw new NotFoundException(`Job Not Found`);
+    try {
+      const jobToDelete = await this.jobsRepository.delete(id);
+      if (jobToDelete.affected === 0) {
+        throw new NotFoundException(`Job with ID ${id} not found`);
+      }
+    } catch (error) {
+      throw error;
     }
-    await this.jobsRepository.delete(id);
   }
 
-  async findByCompanyId(companyId: number): Promise<Job[]> {
-    return this.jobsRepository.find({
-      where: { companyId },
-    });
+  async findByCompanyId(companyId: number): Promise<Job> {
+    try {
+      const existingCompany = await this.jobsRepository.findOne({
+        where: { companyId },
+      });
+      if (!existingCompany) {
+        throw new NotFoundException('No jobs for the provided Company Id');
+      }
+      return existingCompany;
+    } catch (error) {
+      throw error;
+    }
   }
 }
